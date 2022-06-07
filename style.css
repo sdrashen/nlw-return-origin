@@ -1,55 +1,105 @@
 * {
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 :root {
     font-size: 62.5;
     /*1rem = 10px por causa do font-size: 62.5 */
-    --primary-color: hsl(170, 100%, 26%);
+    --hue: 170;
+    /*Basta mudar esse número para mudar algumas cores*/
+    /*Esse hue e os outros e também o calc ele inseriu para mudar as cores*/
+    --primary-color: hsl(var(--hue), 100%, 26%);
     --headline-color: hsl(210, 11%, 15%);
     --paragraph: hsl(210, 9%, 31%);
+    --brand-beige: hsl(39, 100%, 97%);
+    --brand-light: hsl(calc(var(--hue)) - 22, 23%, 89%);
+    --brand-dark: hsl(var(--hue), 100%, 14%);
+    --bg-light: hsl(180, 14%, 97%);
+    --nav-height: 7.2rem;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
 }
 
 body {
     font-family: 'DM Sans';
     font-size: 1.6rem;
     text-align: center;
+    overflow: overlay;
+    /*Sobrepõe. Não vai contar com o tamanho da barrinha de escrolar que fica ao lado*/
+    background-color: var(--bg-light);
 }
 
-header {
-    width: 37.5rem;
-    margin: 4.1rem auto;
+.wrapper {
+    width: min(50rem, 100%);
+    /*Responsividade:Menos que 50rem, pega os 100%. 
+    *Mais que 50rem fica no 50rem mesmo
+    */
+    margin-inline: auto;
+    padding-inline: 2.4rem;
 }
 
-h4 {
+ul {
+    list-style: none;
+}
+
+img {
+    /*Faz com que toda img respeite o tamanho da caixa em que está, sem transbordar/overflow.*/
+    max-width: 100%;
+    /*Nesse caos, 100% será o do .wrapper, que aqui é o único que tem a largura definida.*/
+}
+
+section {
+    padding-block: 10rem;
+}
+
+section header h4 {
     font-size: 1rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0.08rem;
     color: var(--primary-color);
+    text-transform: uppercase;
     margin-bottom: 1.6rem;
 }
 
-h1 {
+section header h2 {
+    font-size: 3rem;
+    line-height: 3.9rem;
+    color: var(--headline-color);
+    margin-bottom: 6rem;
+}
+
+section header h1 {
     font-size: 3.4rem;
     color: var(--headline-color);
     line-height: 130%;
     margin-bottom: 2.4rem;
 }
 
-p {
-    font-size: 1.8rem;
-    line-height: 150%;
+section .content p {
     font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 150%;
     color: var(--paragraph);
-    margin-bottom: 3.2rem;
 }
 
-button {
+.button {
     background: var(--primary-color);
     border: none;
     border-radius: 4rem;
     margin-bottom: 6rem;
-    height: 6.2rem;
-    width: 26.3rem;
+    padding: 1.6rem 3.2rem;
+    width: fit-content;
     color: #fff;
     text-transform: uppercase;
     font-size: 1.4rem;
@@ -58,5 +108,407 @@ button {
     align-items: center;
     justify-content: center;
     gap: 1.6rem;
-    margin: 0 auto;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: var(--brand-dark);
+    transition: background 200ms;
+}
+
+.social-links {
+    /*Pode pegar direto porque o menu-expanded .menu
+*já está fazendo todo o trabalho de mostrar todos os elementos*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3.2rem;
+}
+
+
+/*CUSTOM COLORS*/
+
+#services .card circle {
+    fill: var(--bg-light);
+}
+
+#navigation .logo path[fill*='#00856F'],
+#backToTopButton circle {
+    fill: var(--primary-color);
+}
+
+button.open-menu path[stroke*='#00856F'],
+#contact li path {
+    stroke: var(--primary-color);
+}
+
+body.menu-expanded #navigation .logo path,
+#navigation.scroll .logo path {
+    fill: #fff;
+}
+
+#navigation.scroll button.open-menu path[stroke*='#00856F'] {
+    stroke: #fff;
+}
+
+
+/* NAVIGATION */
+
+nav {
+    display: flex;
+    height: var(--nav-height);
+    position: fixed;
+    /*Esse position também faz uma sobreposição de conteúdo. Isso pode fazer com o elemento perca algumas propriedades já aplicadas*/
+    /*Nesse caso, perdeu as que o .wrapper havia aplicado*/
+    top: 0;
+    width: 100vw;
+    /* left: 50%; */
+    /*Esse left fez o elemento ficar no meio da page. Porém isso significa que ele ficaria mais para a direita. A borda esquerda dele ficou no centro*/
+    /*Então é necessário algo que faça ele ficar centralizado igual aos outos itens.*/
+    /*A proprieda de abaixo faz isso.*/
+    /* transform: translateX(-50%); */
+    /*Através do translaeX, ele sabe calcular o tamanho total do el e também que a lagura vai equivaler a 100% do elemento.*/
+    /* Ao deslocar 50%, desloca-se apenas a metade dele para a esquerda.*/
+    z-index: 100;
+}
+
+nav .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav.scroll {
+    background: var(--primary-color);
+}
+
+nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+nav .menu,
+
+/*Entraram pela responsividade*/
+
+nav .close-menu {
+    position: fixed;
+}
+
+
+/* MENU-EXPANDED */
+
+body.menu-expanded {
+    overflow: hidden;
+}
+
+
+/* body.menu-expanded> *{
+/*Pegar todos do 1º nível
+/* display: none; 
+/*Display: none é mais forte do opacity: 0; + visibility: hidden;
+/*} 
+*/
+
+
+/*Mas não é sumir com tudo o objetivo aqui. É sumir apenas com o nav, então:*/
+
+body.menu-expanded> :not(nav) {
+    /*Vai aplicar isso para todos o de 1º nível exceto ao nav*/
+    /* display: none; */
+    /*Esse display elimina o elemento da tela*/
+    visibility: hidden;
+}
+
+.menu,
+.close-menu,
+body.menu-expanded .open-menu {
+    opacity: 0;
+    /*opacity faz com que o elemento (links) suma mas ele continua clicável*/
+    visibility: hidden;
+    /*visibility: hidden faz com ele fique escondido e não clicável*/
+}
+
+body.menu-expanded .menu,
+body.menu-expanded .close-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu {
+    transform: translateY(100%);
+    /*Aqui o menu é jogado totalmente para fora da tela*/
+}
+
+body.menu-expanded .menu {
+    /*body.menu-expanded = Quando o body estiver com o menu-expanded
+    *ele vai procurar dentro do body o menu (.menu)
+    */
+    /* position: fixed;  Saiu pela responsividade*/
+    top: 0;
+    left: 0;
+    background: var(--primary-color);
+    width: 100vw;
+    height: 100vh;
+    padding-top: var(--nav-height);
+    transition: transform 300ms;
+    transform: translateY(0);
+    /*Esse transform 0 faz ele voltar com uma transição*/
+}
+
+.menu ul:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    gap: 4.8rem;
+    margin-top: 6rem;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 3.1rem;
+}
+
+.menu ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu .button {
+    background: #fff;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 23px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--primary-color);
+    display: inline-block;
+    /*Esse inline-block faz ele aplicar propriedades como width, *height, fazer a quebra da linha
+    */
+    padding: 16px 32px;
+    margin-top: 4.8rem;
+    margin-bottom: 8rem;
+}
+
+.menu .button:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    filter: brightness(1.1);
+}
+
+body.menu-expanded .logo,
+body.menu-expanded button {
+    position: relative;
+    /*Esse position destrava algumas propriedades como o z-index, por ex*/
+    z-index: 100;
+}
+
+body.menu-expanded .logo path {
+    fill: white;
+}
+
+body.menu-expanded button path {
+    stroke: white;
+}
+
+
+/*HOME*/
+
+#home {
+    padding-top: calc(4.1rem + var(--nav-height));
+    /*Essa propriedade faz ele manter o 4.1 e o soma ao 7.2 (height)*/
+}
+
+#home::before {
+    /*Esse before significa "antes" do conteúdo do header*/
+    /*Isso é construir uma tag html usando css.*/
+    /*Também poderia ser cirada normalmente no html. Aqui é questão de aprendizado*/
+    /*É necessário que esse elemento tenha um conteúdo vazio, uma largura, uma altura, um background e um display block*/
+    content: '';
+    width: 100%;
+    height: calc(108rem + var(--nav-height));
+    /*Vamos usar a função calc aqui porque depois de estilizar os itens de cima com a --nav-height, os dessa parte foram empurrados para baixo*/
+    background-color: var(--brand-light);
+    display: block;
+    /*Após criado, o elemento fica por cima do conteúdo.*/
+    /*Para ajustar a posição desse elemento na page*/
+    position: absolute;
+    /*Esse position faz ele ficar por cima do conteúdo*/
+    /*As propriedades top e left são destravadas pelo uso do position acima*/
+    top: 0;
+    left: 0;
+    /*z-index é 0 por padrão. Esse eixo ajusta se o elemento fica por cima ou por trás do conteúdo*/
+    z-index: -1;
+}
+
+#home .button {
+    margin-inline: auto;
+}
+
+#home p {
+    font-size: 1.8rem;
+    line-height: 150%;
+    font-weight: 400;
+    color: var(--paragraph);
+    margin-bottom: 3.2rem;
+}
+
+#home img {
+    display: block;
+    margin-inline: auto;
+    object-position: 0 2rem;
+    width: 26.4rem;
+}
+
+#home .stats {
+    /* width: 32.7rem; Saiu pela responsividade*/
+    width: 100%;
+    padding-block: 4rem;
+    /*padding-block é referente ao eixo y (top & bottom)*/
+    margin-inline: auto;
+    /*margin-inline é referente ao eixo x (right & left)*/
+    background-color: var(--brand-beige);
+    border: 1px solid var(--brand-light);
+    border-radius: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6rem;
+}
+
+#home .stat h3 {
+    font-size: 4.8rem;
+    color: var(--headline-color);
+    line-height: 130%;
+    margin-bottom: 0.4rem;
+}
+
+#home .stat p {
+    margin: 0;
+    color: var(--primary-color);
+    line-height: 150%;
+}
+
+
+/*SERVICES*/
+
+#services header h2 {
+    margin-bottom: 6rem;
+}
+
+#services .cards {
+    display: flex;
+    /*flex aplicado para liberar o gap*/
+    flex-direction: column;
+    gap: 3.2rem;
+}
+
+#services .card {
+    padding: 2.4rem;
+    text-align: left;
+    border: 1px solid var(--brand-light);
+    border-radius: 0.6rem;
+    background: white;
+}
+
+#services .card h3 {
+    margin-block: 1.6rem;
+}
+
+
+/*ABOUT*/
+
+#about {
+    text-align: left;
+    background-color: var(--brand-beige);
+}
+
+#about header h2 {
+    margin-bottom: 2.4rem;
+}
+
+#about .content p {
+    margin-top: 2.4rem;
+    margin-bottom: 6rem;
+}
+
+
+/*CONTACT*/
+
+#contact {
+    text-align: left;
+}
+
+#contact header {
+    margin-bottom: 3.2rem;
+}
+
+#contact ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+#contact ul li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 3.2rem;
+}
+
+
+/*FOOTER*/
+
+footer {
+    background-color: var(--primary-color);
+    padding-block: 6rem;
+    text-align: left;
+    color: #fff;
+}
+
+footer .logo {
+    /*No HTML, a tag "a" que é a tag da clase .logo tem um display: inline
+    *e esse display não aceita margin top e bottom, width, height.
+    *Então aqui deve-se transformar para inline-block, assim
+    *as propriedades inline são mantidas (as que não forem mudadas)
+    e terá algumas propriedades destravadas, como o margin-bottom*/
+    display: inline-block;
+    margin-bottom: 2.4rem;
+}
+
+footer .logo svg {
+    width: 23.6rem;
+    height: 3.1rem;
+}
+
+footer .logo path {
+    fill: #fff;
+}
+
+footer p {
+    color: var(--brand-beige);
+    line-height: 2;
+    margin-bottom: 3.2rem;
+}
+
+footer .social-links {
+    justify-content: flex-start;
+}
+
+
+/*BACK TO TOP BUTTON*/
+
+#backToTopButton {
+    position: fixed;
+    bottom: 1rem;
+    right: 2.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: 200ms;
+}
+
+#backToTopButton.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
