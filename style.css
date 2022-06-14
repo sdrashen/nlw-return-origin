@@ -5,9 +5,10 @@
 }
 
 :root {
-    font-size: 62.5;
+    font-size: 62.5%;
+    /*No código dele tem % mas no meu ñ deu certo. Layout ficou menor.*/
     /*1rem = 10px por causa do font-size: 62.5 */
-    --hue: 170;
+    --hue: 290;
     /*Basta mudar esse número para mudar algumas cores*/
     /*Esse hue e os outros e também o calc ele inseriu para mudar as cores*/
     --primary-color: hsl(var(--hue), 100%, 26%);
@@ -15,12 +16,14 @@
     --paragraph: hsl(210, 9%, 31%);
     --brand-beige: hsl(39, 100%, 97%);
     --brand-light: hsl(calc(var(--hue)) - 22, 23%, 89%);
+    --brand-light-2: hsl(calc(var(--hue)) + 10, 14%, 97%);
     --brand-dark: hsl(var(--hue), 100%, 14%);
     --bg-light: hsl(180, 14%, 97%);
     --nav-height: 7.2rem;
 }
 
 html {
+    /* chrome://flags/#smooth-scrolling */
     scroll-behavior: smooth;
 }
 
@@ -41,9 +44,6 @@ body {
 
 .wrapper {
     width: min(50rem, 100%);
-    /*Responsividade:Menos que 50rem, pega os 100%. 
-    *Mais que 50rem fica no 50rem mesmo
-    */
     margin-inline: auto;
     padding-inline: 2.4rem;
 }
@@ -63,7 +63,7 @@ section {
 }
 
 section header h4 {
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 700;
     line-height: 150%;
     letter-spacing: 0.08rem;
@@ -76,7 +76,6 @@ section header h2 {
     font-size: 3rem;
     line-height: 3.9rem;
     color: var(--headline-color);
-    margin-bottom: 6rem;
 }
 
 section header h1 {
@@ -109,11 +108,11 @@ section .content p {
     justify-content: center;
     gap: 1.6rem;
     text-decoration: none;
+    transition: background 200ms;
 }
 
 .button:hover {
     background-color: var(--brand-dark);
-    transition: background 200ms;
 }
 
 .social-links {
@@ -129,7 +128,7 @@ section .content p {
 /*CUSTOM COLORS*/
 
 #services .card circle {
-    fill: var(--bg-light);
+    fill: var(--brand-light);
 }
 
 #navigation .logo path[fill*='#00856F'],
@@ -188,10 +187,11 @@ nav button {
     cursor: pointer;
 }
 
+
+/*Entraram pela responsividade: nav .menu,
+nav .close-menu*/
+
 nav .menu,
-
-/*Entraram pela responsividade*/
-
 nav .close-menu {
     position: fixed;
 }
@@ -274,10 +274,10 @@ body.menu-expanded .menu {
 
 .menu .button {
     background: #fff;
-    border-radius: 40px;
+    border-radius: 4rem;
     font-weight: 700;
-    font-size: 18px;
-    line-height: 23px;
+    font-size: 1.8rem;
+    line-height: 2.3rem;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--primary-color);
@@ -292,7 +292,7 @@ body.menu-expanded .menu {
 .menu .button:hover {
     background-color: var(--primary-color);
     color: #fff;
-    filter: brightness(1.1);
+    filter: brightness(1.3);
 }
 
 body.menu-expanded .logo,
@@ -314,6 +314,10 @@ body.menu-expanded button path {
 /*HOME*/
 
 #home {
+    padding-block: 0;
+    /*Esse padding-block: 0; tem a ver com a responsividade.
+    *O padding do section na responsividade tem menos peso.
+    */
     padding-top: calc(4.1rem + var(--nav-height));
     /*Essa propriedade faz ele manter o 4.1 e o soma ao 7.2 (height)*/
 }
@@ -325,7 +329,7 @@ body.menu-expanded button path {
     /*É necessário que esse elemento tenha um conteúdo vazio, uma largura, uma altura, um background e um display block*/
     content: '';
     width: 100%;
-    height: calc(108rem + var(--nav-height));
+    height: calc(76% + var(--nav-height));
     /*Vamos usar a função calc aqui porque depois de estilizar os itens de cima com a --nav-height, os dessa parte foram empurrados para baixo*/
     background-color: var(--brand-light);
     display: block;
@@ -385,6 +389,7 @@ body.menu-expanded button path {
 #home .stat p {
     margin: 0;
     color: var(--primary-color);
+    font-size: 1.6rem;
     line-height: 150%;
 }
 
@@ -446,13 +451,13 @@ body.menu-expanded button path {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
+    margin-bottom: 3.2rem;
 }
 
 #contact ul li {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    margin-bottom: 3.2rem;
 }
 
 
@@ -511,4 +516,250 @@ footer .social-links {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+
+/*RESPONSIVO*/
+
+@media (min-width: 1024px)
+/*1024 pra cima*/
+
+{
+    /*GERAL*/
+    body {
+        overflow: auto;
+    }
+    .wrapper {
+        width: min(112rem, 100%);
+        /*Para essa medida, ele olhou no layout a maior largura que é *a caixa onde está "Como podemos ajudá-lo 
+        a se sentir melhor? ". */
+        display: grid;
+    }
+    .col-a {
+        grid-area: A;
+    }
+    .col-b {
+        grid-area: B;
+    }
+    section {
+        padding-block: 16rem;
+    }
+    section header h2 {
+        font-size: 4rem;
+        line-height: 5.2rem;
+    }
+    /*NAVIGATION*/
+    /*RESET*/
+    nav#navigation .wrapper * {
+        margin: 0;
+        padding: 0;
+        visibility: initial;
+        /*Esse intial significa que vai pegar o valor inicial antes de colocar o CSS, que é o que o navegador aplicaria*/
+        display: initial;
+        opacity: initial;
+        flex-direction: initial;
+        position: initial;
+        font-size: initial;
+        font-weight: initial;
+        transform: initial;
+        color: initial;
+        background-color: initial;
+        filter: initial;
+    }
+    nav#navigation .close-menu,
+    nav#navigation .open-menu,
+    nav#navigation .social-links {
+        display: none;
+    }
+    nav#navigation .menu {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 60%;
+    }
+    nav#navigation .menu ul:nth-child(1) {
+        display: flex;
+        gap: 3.2rem;
+    }
+    nav#navigation .menu ul li a {
+        color: var(--primary-color);
+        opacity: 0.7;
+    }
+    nav#navigation .menu a.button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 2.4rem;
+        border: 1px solid var(--primary-color);
+        border-radius: 4rem;
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        text-transform: uppercase;
+    }
+    nav#navigation .menu a.button:hover {
+        background-color: var(--primary-color);
+        border: none;
+        color: white;
+    }
+    nav#navigation.scroll .menu ul li a {
+        color: var(--brand-light-2);
+        opacity: 0.6;
+    }
+    nav#navigation.scroll .menu a.button {
+        border-color: white;
+        color: white;
+    }
+    nav#navigation .menu li a {
+        transition: opacity 0.4s;
+        /*Esse transition aqui tem a ver com o 
+        *nav#navigation .menu li a::after
+        */
+    }
+    nav#navigation .menu li a.active,
+    nav#navigation .menu li a:hover {
+        opacity: 1;
+        font-weight: 700;
+    }
+    nav#navigation .menu li a::after {
+        /*Para colocar aqueles tracinhos embaixo*/
+        content: '';
+        width: 0%;
+        height: 2px;
+        background-color: var(--primary-color);
+        /*position: relative para destravar bottom e left*/
+        position: relative;
+        bottom: -2rem;
+        left: -0.5rem;
+        display: block;
+        transition: width 0.2s;
+        /*Esse transition fará o tracinho crescer quando :hover*/
+    }
+    nav#navigation.scroll .menu li a::after {
+        background-color: white;
+    }
+    nav#navigation .menu li a.active::after,
+    nav#navigation .menu li a:hover::after {
+        /*Quando o nav tiver o id navigation procura dentro dele
+        *o elemento com a classe .menu e dentro dele todo li e
+        *dentro do li toda tag a, quando esse a estiver em :hover
+        *procura o elemento ::after
+        */
+        padding-inline: 0.8rem;
+        width: 100%;
+    }
+    nav#navigation.scroll .menu li a.active,
+    nav#navigation.scroll .menu li a:hover {
+        opacity: 1;
+    }
+    nav#navigation.scroll .menu a.button.active,
+    nav#navigation.scroll .menu a.button:hover {
+        /*Botão agende sua consulta*/
+        background-color: var(--primary-color);
+        filter: brightness(1.3);
+        border: none;
+    }
+    /*HOME*/
+    #home::before {
+        height: calc(96% - var(--nav-height));
+    }
+    #home {
+        padding-top: var(--nav-height);
+    }
+    #home .wrapper {
+        grid-template-columns: 60.5rem 1fr;
+        grid-template-areas: 'A B' 'C C';
+    }
+    #home .col-a {
+        text-align: left;
+        align-self: center;
+    }
+    #home h1 {
+        font-size: 5.2rem;
+    }
+    #home .content p {
+        font-size: 1.8rem;
+    }
+    #home .stats {
+        grid-area: C;
+        flex-direction: row;
+        padding: 6rem;
+        gap: 0;
+        /*Esse gap: 0 tem relação com 0 #home .stas .stat, para alinhar os filhos.*/
+    }
+    #home .stats .stat+.stat
+    /*Dentro do home pega um stat que anterior a ele tenha um stat*/
+    {
+        border-left: 1px solid var(--primary-color);
+    }
+    #home .stats .stat {
+        /*É possível aplicar esse propriedade do flex porque o elemento
+        *dentro do qual esse se encontra é um flex.
+        */
+        flex: 1;
+        /*Esse núm. 1 significa que ele preencherá por igual cada um dos filhos*/
+    }
+    #home .button {
+        margin: 0;
+    }
+    #home img {
+        width: 42rem;
+    }
+    /*SERVICES*/
+    #services h2 {
+        width: 47rem;
+        margin-inline: auto;
+    }
+    #services .cards {
+        flex-direction: row;
+        flex-wrap: wrap;
+        /*Encaixa os caras aí mas respeita o tam do card*/
+        gap: 4rem;
+    }
+    #services .card {
+        width: 30%;
+        flex-grow: 1;
+        /*Havia um espaço sobrando no lado direito da caixa ds cartões.
+        *Esse flex-grow: 1 faz ele preencher o espaço restante.
+        */
+    }
+    /*ABOUT*/
+    #about .wrapper {
+        grid-template-columns: 48rem 1fr;
+        grid-template-areas: 'B A';
+        gap: 6.7rem;
+    }
+    #about .col-a {
+        align-self: center;
+    }
+    #about .content p {
+        margin-bottom: 0;
+    }
+    /*CONTACT*/
+    #contact .wrapper {
+        grid-template-columns: 1fr 57.5rem;
+        grid-template-areas: 'A B';
+    }
+    #contact h2 {
+        width: 40.4rem;
+    }
+    /*FOOTEr*/
+    footer {
+        padding-block: 8rem;
+    }
+    footer .wrapper {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 'A B';
+    }
+    footer .col-a {
+        align-self: center;
+    }
+    footer .col-b {
+        align-self: center;
+        justify-self: flex-end;
+    }
+    footer p {
+        margin-bottom: 0;
+    }
 }
